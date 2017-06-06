@@ -55,7 +55,7 @@ class Comments(models.Model):
 class Reg(models.Model):
     reg_user = models.ForeignKey(User)
     fullname = models.CharField(max_length=100)
-    birthday = models.IntegerField(blank=True, null=True)
+    birthday = models.CharField(max_length=20)
     country = models.CharField(max_length=300)
     city = models.CharField(max_length=300)
 
