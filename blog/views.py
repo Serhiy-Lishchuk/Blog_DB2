@@ -1,5 +1,6 @@
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, render_to_response
 from django.template.context_processors import csrf
 from .models import Reg
 # Create your views here.
@@ -32,3 +33,25 @@ def registration(request):
     else:
         args['Error'] = 'Bad request!'
         return render_to_response('registration.html', args)
+
+
+def login_user(request):
+    args = {}
+    args.update(csrf(request))
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        args['Error'] = False
+        if user is not None:
+            login(request, user)
+            args['user'] = user
+            return redirect('base.html', args)
+        else:
+            args['Error'] = True
+            args['MSG'] = 'Invalid login or password!'
+            return render_to_response(args)
+    else:
+        args['Error'] = True
+        args['MSG'] = 'Bad request'
+        return render_to_response('login.html', args)
