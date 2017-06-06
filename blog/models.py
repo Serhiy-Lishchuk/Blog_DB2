@@ -50,3 +50,27 @@ class Comments(models.Model):
             'com_user': self.com_user
         }
         return items
+
+
+class Reg(models.Model):
+    reg_user = models.ForeignKey(User)
+    fullname = models.CharField(max_length=100)
+    birthday = models.IntegerField(blank=True, null=True)
+    country = models.CharField(max_length=300)
+    city = models.CharField(max_length=300)
+
+    class Meta:
+        db_table = 'reg_user'
+
+    def __str__(self):
+        return self.reg_user
+
+    def as_dict(self):
+        items = {
+            'reg_user': self.reg_user,
+            'fullname': self.fullname,
+            'birthday': self.birthday,
+            'country': self.country,
+            'city': self.city
+        }
+        return items
