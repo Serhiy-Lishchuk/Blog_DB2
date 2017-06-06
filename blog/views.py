@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render_to_response
 from django.template.context_processors import csrf
@@ -55,3 +55,8 @@ def login_user(request):
         args['Error'] = True
         args['MSG'] = 'Bad request'
         return render_to_response('login.html', args)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login.html')
