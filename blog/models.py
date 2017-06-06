@@ -28,3 +28,25 @@ class Post(models.Model):
             'created_date': self.created_date
         }
         return items
+
+
+class Comments(models.Model):
+    comments_post = models.ForeignKey(Post)
+    comments = models.TextField()
+    com_date = models.DateTimeField(auto_now_add=True)
+    com_user = models.ForeignKey(User)
+
+    class Meta:
+        db_table = 'comments'
+
+    def __str__(self):
+        return self.comments
+
+    def as_dict(self):
+        items = {
+            'comments_post': self.comments_post_id,
+            'comments': self.comments_post,
+            'com_data': self.com_date,
+            'com_user': self.com_user
+        }
+        return items
