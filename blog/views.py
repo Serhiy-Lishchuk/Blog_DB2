@@ -79,6 +79,7 @@ def create_post(request):
         else:
             args['Error'] = True
             args['MSG'] = 'Empty post'
+            return render_to_response(args)
     else:
         args['Error'] = True
         args['MSG'] = 'Not a registered user'
@@ -97,6 +98,7 @@ def add_comment(request):
         else:
             args['Error'] = True
             args['MSG'] = 'Empty comment'
+            return render_to_response(args)
     else:
         args['Error'] = True
         args['MSG'] = 'Not a registered user'
