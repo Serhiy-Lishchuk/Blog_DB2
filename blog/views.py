@@ -1,8 +1,9 @@
+from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render_to_response
 from django.template.context_processors import csrf
-from .models import Reg
+from .models import Reg, Post
 # Create your views here.
 
 
@@ -60,3 +61,25 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('login.html')
+
+
+def create_post(request):
+    user = auth.get_user(request)
+    args = {}
+    if user.is_authenticated():
+        args['Error'] = False
+        if request.POST.get('title') != '' and request.POST.get('text') != '':
+            args['Error'] = False
+            post = Post.objects.create(
+                title=request.POST.get('title'),
+                text=request.POST.get('text'),
+                content=request.POST.get('content')
+            )
+            post.save()
+        else:
+            args['Error'] = True
+            args['MSG'] = 'Empty post'
+    else:
+        args['Error'] = True
+        args['MSG'] = 'Not a registered user'
+        return render_to_response('base.html', args)
