@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render_to_response
 from django.template.context_processors import csrf
-from .models import Reg, Post
+from .models import Comments, Post, Reg
 # Create your views here.
 
 
@@ -79,6 +79,24 @@ def create_post(request):
         else:
             args['Error'] = True
             args['MSG'] = 'Empty post'
+    else:
+        args['Error'] = True
+        args['MSG'] = 'Not a registered user'
+        return render_to_response('base.html', args)
+
+
+def add_comment(request):
+    user = auth.get_user(request)
+    args = {}
+    if user.is_authenticated():
+        args['Error'] = False
+        if request.POST.get('comments') != '':
+            args['Error'] = False
+            com = Comments.objects.create(comments=request.POST.get('comments'))
+            com.save()
+        else:
+            args['Error'] = True
+            args['MSG'] = 'Empty comment'
     else:
         args['Error'] = True
         args['MSG'] = 'Not a registered user'
